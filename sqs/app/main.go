@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -39,13 +40,15 @@ func main() {
 		Client: sqs.New(sess),
 		URL:    url,
 	}
+	fmt.Println("===send once sqs===")
 	q.sendMessage()
+	fmt.Println("===send batch sqs===")
+	q.sendBatchMessage()
 }
 
 func (q *Queue) sendMessage() {
 
 	var msg = Message{
-		Url:  "",
 		Time: time.Now(),
 		From: "12345",
 	}
@@ -62,4 +65,28 @@ func (q *Queue) sendMessage() {
 		panic(err)
 	}
 	fmt.Println(sendMessageOutput)
+}
+
+func (q *Queue) sendBatchMessage() {
+
+	entries := []*sqs.SendMessageBatchRequestEntry{}
+
+	// 最多十筆
+	for i := 0; i < 10; i++ {
+		entry := sqs.SendMessageBatchRequestEntry{
+			Id:          aws.String(strconv.Itoa(i)),
+			MessageBody: aws.String(time.Now().String()),
+		}
+		entries = append(entries, &entry)
+	}
+
+	batchMsgInput := &sqs.SendMessageBatchInput{
+		Entries:  entries,
+		QueueUrl: aws.String(q.URL),
+	}
+	batchMsgOutput, err := q.Client.SendMessageBatch(batchMsgInput)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(batchMsgOutput)
 }
