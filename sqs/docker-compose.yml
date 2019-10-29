@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  sqsclient:
+    image: golang:1.13.1
+    container_name: sqsclient
+    volumes:
+      - ./app:/go/src/app
+      - ./.aws:/root/.aws
+    working_dir: /go/src/app
+    tty: true
+    networks:
+        - sqs
+
+  sqs:
+    image: roribio16/alpine-sqs
+    container_name: sqs
+    ports:
+      - 9324:9324 
+      - 9325:9325 # portal : http://localhost:9325
+    networks:
+        - sqs
+
+networks:
+  sqs:
+    name: sqs
