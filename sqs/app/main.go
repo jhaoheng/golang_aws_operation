@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/sqs/sqsiface"
 )
 
-var url string = "http://localhost:9324/queue/default"
+var url string = "http://sqs:9324/queue/default"
 
 type Queue struct {
 	Client sqsiface.SQSAPI
@@ -23,14 +23,12 @@ type Queue struct {
 
 // Message is a concrete representation of the SQS message
 type Message struct {
-	Url  string
 	Time time.Time
 	From string
 }
 
 func main() {
 	// Create a Session with a custom region
-
 	sess := session.Must(session.NewSession(&aws.Config{
 		Region:   aws.String("eu-central-1"),
 		Endpoint: aws.String("http://sqs:9324"),
@@ -40,14 +38,16 @@ func main() {
 		Client: sqs.New(sess),
 		URL:    url,
 	}
-	fmt.Println("===send once sqs===")
-	q.sendMessage()
-	fmt.Println("===send batch sqs===")
-	q.sendBatchMessage()
+
+	// q.getQueueAttributes()
+	// q.sendMessage()
+	// q.sendBatchMessage()
+	// q.receiveMessage()
+	// q.deleteMessage(q.receiveMessage())
+	q.getQueueAttributes()
 }
 
 func (q *Queue) sendMessage() {
-
 	var msg = Message{
 		Time: time.Now(),
 		From: "12345",
@@ -89,4 +89,52 @@ func (q *Queue) sendBatchMessage() {
 		panic(err)
 	}
 	fmt.Println(batchMsgOutput)
+}
+
+func (q *Queue) receiveMessage() (messages []*sqs.Message) {
+	receiveMsgInput := &sqs.ReceiveMessageInput{
+		MaxNumberOfMessages: aws.Int64(10), //1~10
+		QueueUrl:            aws.String(q.URL),
+	}
+	receiveMsgOutput, err := q.Client.ReceiveMessage(receiveMsgInput)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(receiveMsgOutput)
+	return receiveMsgOutput.Messages
+}
+
+func (q *Queue) deleteMessage(messages []*sqs.Message) {
+
+	entries := []*sqs.DeleteMessageBatchRequestEntry{}
+	for _, v := range messages {
+		entry := sqs.DeleteMessageBatchRequestEntry{
+			Id:            aws.String(*v.MessageId),
+			ReceiptHandle: aws.String(*v.ReceiptHandle),
+		}
+		entries = append(entries, &entry)
+	}
+
+	deleteMsgBatchInput := &sqs.DeleteMessageBatchInput{
+		Entries:  entries,
+		QueueUrl: aws.String(q.URL),
+	}
+	deleteMessageBatchOutput, err := q.Client.DeleteMessageBatch(deleteMsgBatchInput)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(deleteMessageBatchOutput)
+}
+
+func (q *Queue) getQueueAttributes() {
+	getQueueAttributesInput := &sqs.GetQueueAttributesInput{
+		AttributeNames: aws.StringSlice([]string{"All"}),
+		QueueUrl:       aws.String(q.URL),
+	}
+	getQueueAttributesOutput, err := q.Client.GetQueueAttributes(getQueueAttributesInput)
+
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(getQueueAttributesOutput)
 }
