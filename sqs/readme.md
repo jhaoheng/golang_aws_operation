@@ -4,6 +4,7 @@
     - 需要注意的是 credential 的設定
 - sqs admin : `http://localhost:9325`
 - sqs doc : https://docs.aws.amazon.com/sdk-for-go/api/service/sqs/
+- sqs endpoint list : https://docs.aws.amazon.com/en_us/general/latest/gr/rande.html
 
 # send
 - sendMessage()
