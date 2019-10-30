@@ -5,6 +5,7 @@ services:
     container_name: dynamodbClient
     volumes:
       - ./app:/go/src/app
+      - ./.aws:/root/.aws
     working_dir: /go/src/app
     tty: true
   dynamodbAdmin:
