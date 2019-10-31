@@ -72,7 +72,7 @@ func (dynamodbObj *DynamodbObj) ScanIsExist(key, value string, TableName string)
 	return false
 }
 
-func (dynamodbObj *DynamodbObj) BatchGetItem(TableName string) {
+func (dynamodbObj *DynamodbObj) GetItem(TableName string) {
 	getItemInput := &dynamodb.GetItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"id": {
