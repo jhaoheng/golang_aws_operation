@@ -28,9 +28,11 @@ func main() {
 	if dynamodbObj.ScanIsExist(key, value) {
 		fmt.Printf("yes, the key[%s] and its value[%s] is exist\n", key, value)
 	}
+
+	dynamodbObj.BatchWriteItem()
 }
 
-const TableName = "atlas_customs_tmp"
+const TableName = "test"
 
 // 屬性類型 : https://docs.aws.amazon.com/sdk-for-go/api/service/dynamodb/#AttributeValue
 func (dynamodbObj *DynamodbObj) ScanIsExist(key, value string) bool {
@@ -56,4 +58,51 @@ func (dynamodbObj *DynamodbObj) ScanIsExist(key, value string) bool {
 		return true
 	}
 	return false
+}
+
+func (dynamodbObj *DynamodbObj) BatchWriteItem() {
+
+	batchWriteItemInput := &dynamodb.BatchWriteItemInput{
+		RequestItems: map[string][]*dynamodb.WriteRequest{
+			"test": {
+				{
+					PutRequest: &dynamodb.PutRequest{
+						Item: map[string]*dynamodb.AttributeValue{
+							"id": {
+								S: aws.String("Somewhat Famous"),
+							},
+							"name": {
+								S: aws.String("name"),
+							},
+						},
+					},
+				},
+				{
+					PutRequest: &dynamodb.PutRequest{
+						Item: map[string]*dynamodb.AttributeValue{
+							"id": {
+								S: aws.String("Songs About Life"),
+							},
+						},
+					},
+				},
+				{
+					PutRequest: &dynamodb.PutRequest{
+						Item: map[string]*dynamodb.AttributeValue{
+							"id": {
+								S: aws.String("Blue Sky Blues"),
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	batchWriteItemOutput, err := dynamodbObj.agent.BatchWriteItem(batchWriteItemInput)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(batchWriteItemOutput)
+
 }
