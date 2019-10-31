@@ -65,7 +65,7 @@ func (dynamodbObj *DynamodbObj) BatchWriteItem() {
 	batchWriteItemInput := &dynamodb.BatchWriteItemInput{
 		RequestItems: map[string][]*dynamodb.WriteRequest{
 			// "test" is a table name
-			"test": {
+			TableName: {
 				{
 					PutRequest: &dynamodb.PutRequest{
 						Item: map[string]*dynamodb.AttributeValue{
