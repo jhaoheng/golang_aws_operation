@@ -14,6 +14,9 @@ type DynamodbObj struct {
 }
 
 func main() {
+
+	var TableName = "test"
+
 	sess := session.Must(session.NewSession(&aws.Config{
 		Region:   aws.String("us-east-1"),
 		Endpoint: aws.String("http://dynamodb:8000"),
@@ -26,7 +29,7 @@ func main() {
 
 	key := "id"
 	value := "1"
-	if dynamodbObj.ScanIsExist(key, value) {
+	if dynamodbObj.ScanIsExist(key, value, TableName) {
 		fmt.Printf("yes, the key[%s] and its value[%s] is exist\n", key, value)
 	}
 
@@ -38,13 +41,13 @@ func main() {
 			"name": "sunny",
 		},
 	}
-	dynamodbObj.BatchWriteItem(datas)
+	dynamodbObj.BatchWriteItem(datas, TableName)
+
+	dynamodbObj.BatchGetItem(TableName)
 }
 
-const TableName = "test"
-
 // 屬性類型 : https://docs.aws.amazon.com/sdk-for-go/api/service/dynamodb/#AttributeValue
-func (dynamodbObj *DynamodbObj) ScanIsExist(key, value string) bool {
+func (dynamodbObj *DynamodbObj) ScanIsExist(key, value string, TableName string) bool {
 	scanInput := &dynamodb.ScanInput{
 		TableName: aws.String(TableName),
 		Select:    aws.String("COUNT"),
@@ -69,7 +72,23 @@ func (dynamodbObj *DynamodbObj) ScanIsExist(key, value string) bool {
 	return false
 }
 
-func (dynamodbObj *DynamodbObj) BatchWriteItem(datas []map[string]string) {
+func (dynamodbObj *DynamodbObj) BatchGetItem(TableName string) {
+	getItemInput := &dynamodb.GetItemInput{
+		Key: map[string]*dynamodb.AttributeValue{
+			"id": {
+				S: aws.String("1"),
+			},
+		},
+		TableName: aws.String(TableName),
+	}
+	GetItemOutput, err := dynamodbObj.agent.GetItem(getItemInput)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(GetItemOutput)
+}
+
+func (dynamodbObj *DynamodbObj) BatchWriteItem(datas []map[string]string, TableName string) {
 	var requestItems = []*dynamodb.WriteRequest{}
 	for index, value := range datas {
 		writeRequest := dynamodb.WriteRequest{
