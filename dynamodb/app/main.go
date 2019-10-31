@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -29,7 +30,15 @@ func main() {
 		fmt.Printf("yes, the key[%s] and its value[%s] is exist\n", key, value)
 	}
 
-	dynamodbObj.BatchWriteItem()
+	datas := []map[string]string{
+		0: {
+			"name": "max",
+		},
+		1: {
+			"name": "sunny",
+		},
+	}
+	dynamodbObj.BatchWriteItem(datas)
 }
 
 const TableName = "test"
@@ -60,43 +69,27 @@ func (dynamodbObj *DynamodbObj) ScanIsExist(key, value string) bool {
 	return false
 }
 
-func (dynamodbObj *DynamodbObj) BatchWriteItem() {
-
-	batchWriteItemInput := &dynamodb.BatchWriteItemInput{
-		RequestItems: map[string][]*dynamodb.WriteRequest{
-			// "test" is a table name
-			TableName: {
-				{
-					PutRequest: &dynamodb.PutRequest{
-						Item: map[string]*dynamodb.AttributeValue{
-							"id": {
-								S: aws.String("Somewhat Famous"),
-							},
-							"name": {
-								S: aws.String("name"),
-							},
-						},
+func (dynamodbObj *DynamodbObj) BatchWriteItem(datas []map[string]string) {
+	var requestItems = []*dynamodb.WriteRequest{}
+	for index, value := range datas {
+		writeRequest := dynamodb.WriteRequest{
+			PutRequest: &dynamodb.PutRequest{
+				Item: map[string]*dynamodb.AttributeValue{
+					"id": {
+						S: aws.String(strconv.Itoa(index)),
 					},
-				},
-				{
-					PutRequest: &dynamodb.PutRequest{
-						Item: map[string]*dynamodb.AttributeValue{
-							"id": {
-								S: aws.String("Songs About Life"),
-							},
-						},
-					},
-				},
-				{
-					PutRequest: &dynamodb.PutRequest{
-						Item: map[string]*dynamodb.AttributeValue{
-							"id": {
-								S: aws.String("Blue Sky Blues"),
-							},
-						},
+					"name": {
+						S: aws.String(value["name"]),
 					},
 				},
 			},
+		}
+		requestItems = append(requestItems, &writeRequest)
+	}
+
+	batchWriteItemInput := &dynamodb.BatchWriteItemInput{
+		RequestItems: map[string][]*dynamodb.WriteRequest{
+			TableName: requestItems,
 		},
 	}
 
@@ -105,5 +98,4 @@ func (dynamodbObj *DynamodbObj) BatchWriteItem() {
 		panic(err)
 	}
 	fmt.Println(batchWriteItemOutput)
-
 }
