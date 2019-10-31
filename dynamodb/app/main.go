@@ -43,7 +43,7 @@ func main() {
 	}
 	dynamodbObj.BatchWriteItem(datas, TableName)
 
-	dynamodbObj.BatchGetItem(TableName)
+	dynamodbObj.GetItem(TableName)
 }
 
 // 屬性類型 : https://docs.aws.amazon.com/sdk-for-go/api/service/dynamodb/#AttributeValue
@@ -81,11 +81,16 @@ func (dynamodbObj *DynamodbObj) GetItem(TableName string) {
 		},
 		TableName: aws.String(TableName),
 	}
-	GetItemOutput, err := dynamodbObj.agent.GetItem(getItemInput)
+	getItemOutput, err := dynamodbObj.agent.GetItem(getItemInput)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(GetItemOutput)
+	fmt.Println(getItemOutput)
+	if len(getItemOutput.Item) == 0 {
+		fmt.Println("don't exist")
+	} else {
+		fmt.Println("exist")
+	}
 }
 
 func (dynamodbObj *DynamodbObj) BatchWriteItem(datas []map[string]string, TableName string) {
