@@ -1,0 +1,31 @@
+{
+    "test": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {"S": "1"},
+                    "name": {"S":"max"},
+                    "status": {"S": "enable"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {"S": "2"},
+                    "name": {"S":"sunny"},
+                    "status": {"S": "disable"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {"S": "3"},
+                    "name": {"S":"Obama"},
+                    "status": {"S": "disable"}
+                }
+            }
+        }
+    ]
+}

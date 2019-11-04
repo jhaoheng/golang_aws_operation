@@ -45,6 +45,8 @@ func main() {
 	dynamodbObj.BatchWriteItem(datas, TableName)
 
 	dynamodbObj.GetItem(TableName)
+
+	dynamodbObj.UpdateItem()
 }
 
 // 屬性類型 : https://docs.aws.amazon.com/sdk-for-go/api/service/dynamodb/#AttributeValue

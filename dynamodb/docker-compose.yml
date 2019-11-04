@@ -23,3 +23,14 @@ services:
     container_name: dynamodb
     ports:
       - 8000:8000
+  awscli:
+    image: jhaoheng/docker-awscli
+    volumes: 
+      - ./.aws:/root/.aws
+      - ./awscli:/home/awscli
+    working_dir: /home/awscli
+    container_name: awscli
+    depends_on: 
+      - dynamodb
+    command: sh -c "chmod +x /home/awscli/entrypoint.sh && sh /home/awscli/entrypoint.sh"
+    tty: true
