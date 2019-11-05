@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  sessionClient:
+    image: golang:1.13.1
+    container_name: sessionClient
+    volumes:
+      - ./app:/go/src/app
+      - ./.aws:/root/.aws
+    working_dir: /go/src/app
+    tty: true
