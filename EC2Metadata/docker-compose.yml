@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  EC2MetadataClient:
+    image: golang:1.13.1
+    container_name: EC2MetadataClient
+    volumes:
+      - ./app:/go/src/app
+      - ./.aws:/root/.aws
+    working_dir: /go/src/app
+    tty: true
