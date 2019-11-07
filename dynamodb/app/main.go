@@ -47,6 +47,8 @@ func main() {
 	dynamodbObj.GetItem(TableName)
 
 	dynamodbObj.UpdateItem()
+
+	dynamodbObj.BatchGetItem()
 }
 
 // 屬性類型 : https://docs.aws.amazon.com/sdk-for-go/api/service/dynamodb/#AttributeValue
@@ -153,4 +155,41 @@ func (dynamodbObj *DynamodbObj) UpdateItem() {
 		panic(err)
 	}
 	fmt.Println(updateItemOutput)
+}
+
+/*
+
+ */
+func (dynamodbObj *DynamodbObj) BatchGetItem() {
+	//
+	datas := []string{
+		"max",
+		"sunny",
+	}
+
+	//
+	var keys = []map[string]*dynamodb.AttributeValue{}
+	for _, value := range datas {
+		key := map[string]*dynamodb.AttributeValue{
+			"id": &dynamodb.AttributeValue{
+				S: aws.String(value),
+			},
+		}
+		keys = append(keys, key)
+	}
+
+	batchGetItemInput := &dynamodb.BatchGetItemInput{
+		RequestItems: map[string]*dynamodb.KeysAndAttributes{
+			TableName: {
+				Keys: keys,
+			},
+		},
+	}
+
+	batchGetItemOutput, err := dynamodbObj.agent.BatchGetItem(batchGetItemInput)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(batchGetItemOutput)
 }
