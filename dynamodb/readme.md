@@ -37,3 +37,14 @@ awscli --endpoint-url http://dynamodb:8000 dynamodb batch-write-item --request-i
 ```
 
 - about `default_datas.json` : The table name need to identify. Present name is `test`
+
+
+# Scan 比較運算子與函數參考
+
+> https://docs.aws.amazon.com/zh_tw/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html
+
+- 可在 scan 中，增加以下多種不同的條件，透過 `FilterExpression` 來設定
+    - attribute_not_exists
+    - attribute_exists
+    - begins_with
+    - contains

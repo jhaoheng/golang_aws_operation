@@ -7,6 +7,7 @@ services:
       - ./app:/go/src/app
       - ./.aws:/root/.aws
     working_dir: /go/src/app
+    command: "-jar DynamoDBLocal.jar -sharedDb"
     tty: true
   dynamodbAdmin:
     image: aaronshaf/dynamodb-admin

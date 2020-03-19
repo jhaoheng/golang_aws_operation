@@ -12,9 +12,8 @@ import (
 
 type DynamodbObj struct {
 	agent *dynamodb.DynamoDB
+	table string
 }
-
-var TableName = "test"
 
 func main() {
 
@@ -30,7 +29,7 @@ func main() {
 
 	key := "id"
 	value := "1"
-	if dynamodbObj.ScanIsExist(key, value, TableName) {
+	if dynamodbObj.ScanIsExist(key, value) {
 		fmt.Printf("yes, the key[%s] and its value[%s] is exist\n", key, value)
 	}
 
@@ -42,9 +41,9 @@ func main() {
 			"name": "sunny",
 		},
 	}
-	dynamodbObj.BatchWriteItem(datas, TableName)
+	dynamodbObj.BatchWriteItem(datas)
 
-	dynamodbObj.GetItem(TableName)
+	dynamodbObj.GetItem()
 
 	dynamodbObj.UpdateItem()
 
@@ -52,9 +51,9 @@ func main() {
 }
 
 // 屬性類型 : https://docs.aws.amazon.com/sdk-for-go/api/service/dynamodb/#AttributeValue
-func (dynamodbObj *DynamodbObj) ScanIsExist(key, value string, TableName string) bool {
+func (dynamodbObj *DynamodbObj) ScanIsExist(key, value string) bool {
 	scanInput := &dynamodb.ScanInput{
-		TableName: aws.String(TableName),
+		TableName: aws.String(dynamodbObj.table),
 		Select:    aws.String("COUNT"),
 		ExpressionAttributeNames: map[string]*string{
 			"#id": aws.String(key),
@@ -77,14 +76,14 @@ func (dynamodbObj *DynamodbObj) ScanIsExist(key, value string, TableName string)
 	return false
 }
 
-func (dynamodbObj *DynamodbObj) GetItem(TableName string) {
+func (dynamodbObj *DynamodbObj) GetItem() {
 	getItemInput := &dynamodb.GetItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"id": {
 				S: aws.String("1"),
 			},
 		},
-		TableName: aws.String(TableName),
+		TableName: aws.String(dynamodbObj.table),
 	}
 	getItemOutput, err := dynamodbObj.agent.GetItem(getItemInput)
 	if err != nil {
@@ -98,7 +97,7 @@ func (dynamodbObj *DynamodbObj) GetItem(TableName string) {
 	}
 }
 
-func (dynamodbObj *DynamodbObj) BatchWriteItem(datas []map[string]string, TableName string) {
+func (dynamodbObj *DynamodbObj) BatchWriteItem(datas []map[string]string) {
 	var requestItems = []*dynamodb.WriteRequest{}
 	for index, value := range datas {
 		writeRequest := dynamodb.WriteRequest{
@@ -118,7 +117,7 @@ func (dynamodbObj *DynamodbObj) BatchWriteItem(datas []map[string]string, TableN
 
 	batchWriteItemInput := &dynamodb.BatchWriteItemInput{
 		RequestItems: map[string][]*dynamodb.WriteRequest{
-			TableName: requestItems,
+			dynamodbObj.table: requestItems,
 		},
 	}
 
@@ -146,7 +145,7 @@ func (dynamodbObj *DynamodbObj) UpdateItem() {
 			},
 		},
 		ReturnValues:     aws.String("ALL_NEW"),
-		TableName:        aws.String(TableName),
+		TableName:        aws.String(dynamodbObj.table),
 		UpdateExpression: aws.String("SET #Updated_at = :Updated_value"),
 	}
 
@@ -180,7 +179,7 @@ func (dynamodbObj *DynamodbObj) BatchGetItem() {
 
 	batchGetItemInput := &dynamodb.BatchGetItemInput{
 		RequestItems: map[string]*dynamodb.KeysAndAttributes{
-			TableName: {
+			dynamodbObj.table: {
 				Keys: keys,
 			},
 		},
@@ -192,4 +191,17 @@ func (dynamodbObj *DynamodbObj) BatchGetItem() {
 	}
 
 	fmt.Println(batchGetItemOutput)
+}
+
+func (dynamodbObj *DynamodbObj) CheckNotExists() (*dynamodb.ScanOutput, error) {
+	scanInput := &dynamodb.ScanInput{
+		TableName: aws.String(dynamodbObj.table),
+		Select:    aws.String("ALL_ATTRIBUTES"),
+		ExpressionAttributeNames: map[string]*string{
+			"#Status": aws.String("status"),
+		},
+		FilterExpression: aws.String("attribute_not_exists(#Status)"),
+	}
+	scanOutput, err := dynamodbObj.agent.Scan(scanInput)
+	return scanOutput, err
 }
