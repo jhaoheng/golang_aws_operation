@@ -14,9 +14,10 @@ func main() {
 
 	//
 	region := "ap-southeast-1"
+	endpoint := "http://sns:9911"
 	subject := "test"
 	topicArn := "arn:aws:sns:ap-southeast-1:478205036267:atlas-issue"
-	mysns := NewSNS(region)
+	mysns := NewSNS(region, endpoint)
 	mysns.publish(string(dat), subject, topicArn)
 }
 
@@ -24,9 +25,10 @@ type MYSNS struct {
 	snsClient *sns.SNS
 }
 
-func NewSNS(region string) MYSNS {
+func NewSNS(region string, endpoint string) MYSNS {
 	sess := session.Must(session.NewSession(&aws.Config{
-		Region: aws.String(region),
+		Region:   aws.String(region),
+		Endpoint: aws.String(endpoint),
 	}))
 	svc := sns.New(sess)
 

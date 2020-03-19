@@ -14,3 +14,19 @@ services:
       - ./.aws:/root/.aws
     container_name: awscli
     tty: true
+
+  sqs:
+    image: roribio16/alpine-sqs
+    container_name: sqs
+    ports:
+      - 9324:9324
+      - 9325:9325
+  sns:
+    image: s12v/sns
+    container_name: sns
+    ports:
+      - 9911:9911
+    volumes:
+      - ./config/db.json:/etc/sns/db.json
+    depends_on: 
+      - sqs
