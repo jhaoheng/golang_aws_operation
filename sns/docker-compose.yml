@@ -1,0 +1,16 @@
+version: "3.2"
+services:
+  app:
+    image: golang:1.13.1
+    container_name: app
+    volumes: 
+      - ./.aws:/root/.aws
+      - ./:/go/src/app
+    working_dir: /go/src/app
+    tty: true
+  awscli:
+    image: jhaoheng/docker-awscli
+    volumes:
+      - ./.aws:/root/.aws
+    container_name: awscli
+    tty: true
