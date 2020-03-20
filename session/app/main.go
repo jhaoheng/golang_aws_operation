@@ -24,4 +24,6 @@ func main() {
 
 	value, _ := sess.Config.Credentials.Get()
 	fmt.Printf("%#v\n", value)
+	fmt.Printf("AccessKeyID : %v\n", value.AccessKeyID)
+	fmt.Printf("SecretAccessKey : %v\n", value.SecretAccessKey)
 }
