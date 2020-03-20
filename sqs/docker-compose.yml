@@ -17,8 +17,20 @@ services:
     ports:
       - 9324:9324 
       - 9325:9325 # portal : http://localhost:9325
+    volumes: 
+      - ./config/elasticmq.conf:/opt/elasticmq.conf
     networks:
         - sqs
+
+  awscli:
+    image: jhaoheng/docker-awscli
+    volumes:
+      - ./.aws:/root/.aws
+    container_name: awscli
+    tty: true
+    networks:
+        - sqs
+
 
 networks:
   sqs:
