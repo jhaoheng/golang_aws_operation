@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  helloworld:
+    image: lambci/lambda:go1.x
+    container_name: services
+    environment: 
+      - DOCKER_LAMBDA_STAY_OPEN=1
+      - DOCKER_LAMBDA_WATCH=1
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
+      - AWS_REGION=us-east-1
+      - _HANDLER=main # handler 名稱
+      - AWS_LAMBDA_FUNCTION_NAME=main
+    ports: 
+      - 9001:9001
+    volumes: 
+      - ./release/task:/var/task:ro,delegated
+  awscli:
+    image: jhaoheng/docker-awscli
+    container_name: awscli
+    environment: 
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
+    tty: true
