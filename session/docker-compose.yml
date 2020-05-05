@@ -1,10 +1,19 @@
 version: "3.7"
 services:
-  sessionClient:
+  app:
     image: golang:1.13.1
-    container_name: sessionClient
+    container_name: app
     volumes:
       - ./app:/go/src/app
       - ./.aws:/root/.aws
     working_dir: /go/src/app
+    environment: 
+      - AWS_ACCESS_KEY_ID=localFromEnv
+      - AWS_SECRET_ACCESS_KEY=localFromEnv
+    tty: true
+  awscli:
+    image: jhaoheng/docker-awscli
+    volumes:
+      - ./.aws:/root/.aws
+    container_name: awscli
     tty: true
