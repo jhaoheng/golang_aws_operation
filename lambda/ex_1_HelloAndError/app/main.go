@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-lambda-go/lambdacontext"
 )
 
 var t float64 = 10 // 程式預設執行時間 second
@@ -18,12 +19,20 @@ func hello(ctx context.Context) (string, error) {
 			for {
 				fmt.Printf("執行 lambda 產生錯誤後的動作, 模擬處理時間 : %v\n", time.Now())
 				time.Sleep(time.Second * 1)
-				if time.Now().Sub(timeStart).Seconds() >= 20 {
+				if time.Now().Sub(timeStart).Seconds() >= 3 {
 					break
 				}
 			}
 		}
 	}()
+
+	fmt.Println("===")
+	fmt.Printf("FunctionName : %v\n", lambdacontext.FunctionName)
+	fmt.Printf("FunctionVersion : %v\n", lambdacontext.FunctionVersion)
+	fmt.Printf("LogGroupName : %v\n", lambdacontext.LogGroupName)
+	fmt.Printf("LogStreamName : %v\n", lambdacontext.LogStreamName)
+	fmt.Printf("MemoryLimitInMB : %d\n", lambdacontext.MemoryLimitInMB)
+	fmt.Println("===")
 
 	timeStart := time.Now()
 	deadline, _ := ctx.Deadline()

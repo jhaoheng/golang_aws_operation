@@ -7,7 +7,8 @@
 # flow
 1. `docker-compose up -d`
 2. build : `docker exec -it app go build -o /root/lambda main.go`
-3. test lambda
+3. log : `docker logs -f lambda`
+4. test lambda
     - curl : `curl -d '{}' http://localhost:9001/2015-03-31/functions/myfunction/invocations`
     - aws cli : 
         - `aws --endpoint-url http://localhost:9001 --region us-east-1 lambda invoke --function-name main --no-sign-request --payload '{}' /dev/stdout`
