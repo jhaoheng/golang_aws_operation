@@ -1,0 +1,27 @@
+version: "3.7"
+services: 
+  app:
+    image: golang:1.14.3
+    container_name: app
+    volumes: 
+      - ./app:/go/src/app
+      - ./lambda/func:/root/lambda
+    working_dir: /go/src/app
+    tty: true
+  lambda:
+    image: lambci/lambda:go1.x
+    container_name: lambda
+    volumes: 
+      - ./lambda/func:/var/task:ro,delegated
+    ports: 
+      - 9001:9001
+    environment: 
+      - DOCKER_LAMBDA_STAY_OPEN=1
+      - DOCKER_LAMBDA_WATCH=1
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
+      - AWS_REGION=us-east-1
+      - _HANDLER=main # handler 名稱
+      - AWS_LAMBDA_FUNCTION_NAME=main
+      - AWS_LAMBDA_FUNCTION_TIMEOUT=3  # 更改為 1s
+    restart: always

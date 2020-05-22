@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'api
+
+  '
+Globals:
+  Function:
+    Timeout: 5
+Resources:
+  apiget:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://my-bucket-20200508/76827c664324690df37cc59035ea3c0b
+      Handler: getHandler
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /hello/get
+            Method: GET
+      Environment:
+        Variables:
+          PARAM1: VALUE
+  apipost:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://my-bucket-20200508/76827c664324690df37cc59035ea3c0b
+      Handler: postHandler
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /hello/post
+            Method: POST
+      Environment:
+        Variables:
+          PARAM1: VALUE
+  apidel:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://my-bucket-20200508/76827c664324690df37cc59035ea3c0b
+      Handler: delHandler
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /hello/del
+            Method: DELETE
+      Environment:
+        Variables:
+          PARAM1: VALUE
+  cusEvent:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://my-bucket-20200508/76827c664324690df37cc59035ea3c0b
+      Handler: cuseventHandler
+      Runtime: go1.x
+      Tracing: Active
+  s3Event:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://my-bucket-20200508/76827c664324690df37cc59035ea3c0b
+      Handler: s3eventHandler
+      Runtime: go1.x
+      Tracing: Active
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: my-app
+    Description: hello app
+    Author: user1
+    SpdxLicenseId: Apache-2.0
+    Labels:
+    - tests
+    HomePageUrl: https://github.com/jhaoheng/my-app-project
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/jhaoheng/my-app-project

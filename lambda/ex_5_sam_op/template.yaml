@@ -1,0 +1,90 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  api
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 5
+
+Resources:
+  apiget:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: release/
+      Handler: getHandler
+      Runtime: go1.x
+      Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
+      Events:
+        CatchAll:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /hello/get
+            Method: GET
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+
+  apipost:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: release/
+      Handler: postHandler
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /hello/post
+            Method: POST
+      Environment:
+        Variables:
+          PARAM1: VALUE
+
+  apidel:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: release/
+      Handler: delHandler
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /hello/del
+            Method: DELETE
+      Environment:
+        Variables:
+          PARAM1: VALUE
+
+  cusEvent:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: release/
+      Handler: cuseventHandler
+      Runtime: go1.x
+      Tracing: Active
+
+  s3Event:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: release/
+      Handler: s3eventHandler
+      Runtime: go1.x
+      Tracing: Active
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: my-app
+    Description: hello app
+    Author: user1
+    SpdxLicenseId: Apache-2.0
+    # LicenseUrl: LICENSE.txt
+    # ReadmeUrl: readme.md
+    Labels: ['tests']
+    HomePageUrl: https://github.com/jhaoheng/my-app-project
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/jhaoheng/my-app-project
