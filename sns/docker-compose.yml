@@ -21,13 +21,14 @@ services:
     ports:
       - 9324:9324
       - 9325:9325
+      
   sns:
     image: s12v/sns
     container_name: sns
     ports:
       - 9911:9911
     volumes:
-      - ./config/db.json:/etc/sns/db.json
+      - ./sns-config/db.json:/etc/sns/db.json
     depends_on: 
       - sqs
     command: sh -c "sleep 6s && java -jar /sns.jar"

@@ -8,11 +8,7 @@ https://docs.aws.amazon.com/sdk-for-go/api/service/sns/
 
 # 使用 awscli 來執行 aws sns api
 ## local sns/sqs
-- `aws --region=us-east-1 --endpoint-url=http://sns:9911 sns publish --topic-arn arn:aws:sns:us-east-1:1465414804035:test1 --message "My first message"`
-
-## aws 環境
-- 在 `.aws/` 中新增 `credentials` 檔案
-- `aws --region=ap-southeast-1 sns publish --topic-arn=arn:aws:sns:ap-southeast-1:478205036267:atlas-issue --message="hello from cli"`
+- `aws --region=us-east-1 --endpoint-url=http://sns:9911 sns publish --topic-arn arn:aws:sns:us-east-1:1465414804035:test --message "My first message"`
 
 # 用 golang 來執行 aws sns api
 1. `docker-compose up -d`
