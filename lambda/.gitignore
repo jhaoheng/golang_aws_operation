@@ -1,3 +1,11 @@
 release/*
 !release/.gitkeep
 *.zip
+
+ex*/lambda*/func/*
+ex*/lambda*/layer/*
+ex_5_application/release/*
+ex_5_application/packaged.yml
+!.gitkeep
+go.sum
+.aws

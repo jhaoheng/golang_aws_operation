@@ -1,7 +1,7 @@
 package main
 
 import (
-	sqsagent "app/sqs/app/sqsAgent"
+	sqsagent "app/sqsAgent"
 	"fmt"
 )
 
