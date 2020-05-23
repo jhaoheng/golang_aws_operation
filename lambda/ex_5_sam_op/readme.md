@@ -37,14 +37,27 @@
 
 
 # use sam to deploy
-## 因以下原因, 必須在本地安裝 awscli & sam
-1. 因為 sam 無法指定 aws 憑證資源 (只能設定 profile, 預設讀取同一個路徑)
-2. 且 sam 無適當的 docker image, build 資源花太久時間
+## 預先準備
+- 部署流程
+    - `https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-publishing-applications.html`
+- metadata 內容範例
+    - 必須手動建立, 必要流程, 否則 `sam public` 會出現錯誤
+    - `https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-publishing-applications-metadata-properties.html`
+
+``` # Metadata 必須標籤
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: my-app
+    Description: hello world
+    Author: user1
+    SemanticVersion: 0.0.1
+```
 
 ## 上傳 SAM 到 SAR, 並且從 SAR 中部署資源
-> 因有用到 s3 trigger lambda, 故需要設定 s3 bucket policy : https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-publishing-applications.html
-
-1. 建立 packaged.yaml : `sam package --template-file template.yaml --output-template-file packaged.yml --s3-bucket {bucket}`
+1. 建立 packaged.yaml, 指定要儲存範本的 s3 bucket
+    - 需要設定 s3 bucket policy : https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-publishing-applications.html
+    - `sam package --template-file template.yaml --output-template-file packaged.yml --s3-bucket {bucket}`
+    - 完成後會在 s3 bucket 中找到 CodeUri 的物件
 2. 發布版本 : `sam publish --template packaged.yml --region us-east-1`
 3. 到 AWS SAR, 查看資源資訊
 4. 點選部署
@@ -52,3 +65,4 @@
 6. 移除 SAR 
     - 在 aws sar 服務中, 移除資源
     - 在 cloudformation 中, 移除資源
+    - 在 s3 移除資源
