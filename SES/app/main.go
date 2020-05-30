@@ -89,10 +89,17 @@ func Raw_Email(from string, to []string) {
 			Subject: "Test Email Subject",
 			Message: "Hello,\r\nPlease see the attached file for a list of customers to contact.",
 		}
-		RawEmail.ATTACHMENT = sesagent.ATTACHMENT{
-			FileName:    "SES.jpg",
-			FileContent: []byte(base64.StdEncoding.EncodeToString([]byte(attachment))),
-			ContentType: "image/jpeg",
+		RawEmail.Attachments = []sesagent.ATTACHMENT{
+			0: {
+				FileName:    "SES_1.jpg",
+				FileContent: []byte(base64.StdEncoding.EncodeToString([]byte(attachment))),
+				ContentType: "image/jpeg",
+			},
+			1: {
+				FileName:    "SES_2.jpg",
+				FileContent: []byte(base64.StdEncoding.EncodeToString([]byte(attachment))),
+				ContentType: "image/jpeg",
+			},
 		}
 		email_data = RawEmail.BuildEmail()
 		return

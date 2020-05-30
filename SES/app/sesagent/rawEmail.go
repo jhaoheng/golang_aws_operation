@@ -12,7 +12,7 @@ type RAWEMAIL struct {
 	Subject string
 	Message string
 
-	ATTACHMENT
+	Attachments []ATTACHMENT
 }
 
 type ATTACHMENT struct {
@@ -76,27 +76,28 @@ func (r *RAWEMAIL) SetBody(writer *multipart.Writer) {
 
 func (r *RAWEMAIL) SetAttachment(writer *multipart.Writer) {
 
-	if len(r.ATTACHMENT.FileName) == 0 || len(r.ATTACHMENT.ContentType) == 0 {
+	if len(r.Attachments) == 0 {
 		return
 	}
+	for _, attachment := range r.Attachments {
+		func(obj []byte) {
+			_, err := base64.StdEncoding.DecodeString(string(obj))
+			if err != nil {
+				panic("ATTACHMENT.FileContent not base64 format")
+			}
+		}(attachment.FileContent)
 
-	func(obj []byte) {
-		_, err := base64.StdEncoding.DecodeString(string(obj))
+		h := make(textproto.MIMEHeader)
+		h.Set("Content-Disposition", "attachment")
+		h.Set("Content-Type", attachment.ContentType+"; name=\""+attachment.FileName+"\"")
+		h.Set("Content-Transfer-Encoding", "base64")
+		part, err := writer.CreatePart(h)
 		if err != nil {
-			panic("ATTACHMENT.FileContent not base64 format")
+			panic(err)
 		}
-	}(r.ATTACHMENT.FileContent)
-
-	h := make(textproto.MIMEHeader)
-	h.Set("Content-Disposition", "attachment")
-	h.Set("Content-Type", r.ATTACHMENT.ContentType+"; name=\""+r.ATTACHMENT.FileName+"\"")
-	h.Set("Content-Transfer-Encoding", "base64")
-	part, err := writer.CreatePart(h)
-	if err != nil {
-		panic(err)
-	}
-	_, err = part.Write(r.ATTACHMENT.FileContent)
-	if err != nil {
-		panic(err)
+		_, err = part.Write(attachment.FileContent)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
