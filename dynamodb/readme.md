@@ -48,3 +48,13 @@ awscli --endpoint-url http://dynamodb:8000 dynamodb batch-write-item --request-i
     - attribute_exists
     - begins_with
     - contains
+
+# 使用 `dynamodbattribute`, 將內容轉換成定義好的 struct format
+
+```
+var objs []OBJS
+err = dynamodbattribute.UnmarshalListOfMaps(PutItemOutput.Items, &objs)
+if err != nil {
+    panic(err)
+}
+```
