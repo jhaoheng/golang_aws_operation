@@ -1,3 +1,6 @@
+# ddb docker image 參數操作方法
+https://docs.aws.amazon.com/zh_tw/amazondynamodb/latest/developerguide/DynamoDBLocal.UsageNotes.html
+
 # How to use
 1. `docker-compose up -d`
 2. open the dynamodbAdmin window

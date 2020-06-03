@@ -7,8 +7,8 @@ services:
       - ./app:/go/src/app
       - ./.aws:/root/.aws
     working_dir: /go/src/app
-    command: "-jar DynamoDBLocal.jar -sharedDb"
     tty: true
+
   dynamodbAdmin:
     image: aaronshaf/dynamodb-admin
     container_name: dynamodbAdmin
@@ -19,11 +19,19 @@ services:
       - AWS_ACCESS_KEY_ID=local
       - AWS_SECRET_ACCESS_KEY=local
       - DYNAMO_ENDPOINT=dynamodb:8000 # dynamodb 不能大寫
+
+  
   dynamodb:
     image: amazon/dynamodb-local:1.11.477
     container_name: dynamodb
     ports:
       - 8000:8000
+    volumes: 
+      - ./local-dynamodb/shared-local-instance.db:/home/dynamodblocal/shared-local-instance.db
+    
+    # 參數操作請參考 readme
+    command: "-jar DynamoDBLocal.jar -sharedDb"
+  
   awscli:
     image: jhaoheng/docker-awscli
     volumes: 
