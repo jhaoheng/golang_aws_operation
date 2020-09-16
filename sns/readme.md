@@ -23,3 +23,17 @@ aws_secret_access_key=
     - region
     - topicArn
 4. 執行 `go run main.go`
+
+
+## android 收到 notification 的格式
+
+```
+Message data payload: {default={
+       "GCM":"{  
+           \"notification\": 
+             { \"body\": \"Sample message for Android endpoints\", \"title\":\"TitleTest\" },
+          \"data\":
+             {\"time_to_live\": 3600,\"collapse_key\":\"deals\"}"
+       }
+    }}
+```

@@ -31,7 +31,18 @@ func make_method_1_sns_topic_publish() {
 	subject := "test"
 	topicArn := "arn:aws:sns:ap-southeast-1:478205036267:atlas-issue"
 	mysns := NewSNS(region, endpoint)
-	mysns.publish(string(dat), subject, topicArn)
+
+	//
+	publishInput := sns.PublishInput{
+		Message:  aws.String(string(dat)),
+		Subject:  aws.String(subject),
+		TopicArn: aws.String(topicArn),
+	}
+	publishOutput, err := mysns.snsClient.Publish(&publishInput)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(publishOutput)
 }
 
 func make_method_2_sns_mobile_push() {
@@ -40,7 +51,7 @@ func make_method_2_sns_mobile_push() {
 	mysns := NewSNS(region, endpoint)
 	//
 	platform_application_arn := "arn:aws:sns:ap-southeast-1:424613967558:app/GCM/fcm"
-	device_token := "token"
+	device_token := "token" // 如果註冊相同的 token, 會得到相同的 endpoint
 	input := &sns.CreatePlatformEndpointInput{
 		PlatformApplicationArn: aws.String(platform_application_arn),
 		Token:                  aws.String(device_token),
@@ -50,6 +61,19 @@ func make_method_2_sns_mobile_push() {
 		panic(err)
 	}
 	fmt.Println(*output.EndpointArn)
+
+	//
+	publishInput := sns.PublishInput{
+		Message:          aws.String("message"),
+		Subject:          aws.String("subject"),
+		TargetArn:        aws.String("endpoint"),
+		MessageStructure: aws.String("json"),
+	}
+	publishOutput, err := mysns.snsClient.Publish(&publishInput)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(publishOutput)
 }
 
 func NewSNS(region string, endpoint string) MYSNS {
@@ -63,17 +87,4 @@ func NewSNS(region string, endpoint string) MYSNS {
 		snsClient: svc,
 	}
 	return mysns
-}
-
-func (mysns *MYSNS) publish(message string, subject, topicArn string) {
-	publishInput := sns.PublishInput{
-		Message:  aws.String(message),
-		Subject:  aws.String(subject),
-		TopicArn: aws.String(topicArn),
-	}
-	publishOutput, err := mysns.snsClient.Publish(&publishInput)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(publishOutput)
 }
