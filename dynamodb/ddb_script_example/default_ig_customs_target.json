@@ -1,0 +1,22 @@
+{
+    "atlas_customs_target": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {"S": "3941485523"},
+                    "name": {"S":"za_share"},
+                    "status": {"S": "waiting"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {"S": "5725523003"},
+                    "name": {"S":"ismile.dental"},
+                    "status": {"S": "waiting"}
+                }
+            }
+        }
+    ]
+}

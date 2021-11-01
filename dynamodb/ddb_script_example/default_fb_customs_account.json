@@ -1,0 +1,24 @@
+{
+    "atlas_customs_fb_account": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "account": {"S": "AngeleiaDelionyV@bk.ru"},
+                    "passwd": {"S": "4QalYAkUjpV"},
+                    "cookies": {"M": {"c_user": {"S": "100034118493421"}, "xs": {"S": "45%3A6cO0kSKG3QYjGw%3A2%3A1574669517%3A-1%3A-1"}}},
+                    "status": {"S": "disable"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "account": {"S": "DeondrayFerrigehU@bk.ru"},
+                    "passwd": {"S":"zaq12345"},
+                    "cookies": {"M": {"c_user": {"S": "100033998621382"}, "xs": {"S": "33%3A5tnx2fhEhVvrqA%3A2%3A1574603521%3A4267%3A3852"}}},
+                    "status": {"S": "disable"}
+                }
+            }
+        }
+    ]
+}

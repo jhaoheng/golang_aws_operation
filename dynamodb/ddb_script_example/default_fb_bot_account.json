@@ -1,0 +1,18 @@
+{
+    "atlas_customs_fb_account": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "account": {"S": "kcu28621@bcaoo.com"},
+                    "passwd": {"S": "ohcae3reiH"},
+                    "cookies": {"M": {"c_user": {"S": "100045821150580"}, "xs": {"S": "27%3Aj_vbCGYQ4BE7nQ%3A2%3A1579146996%3A-1%3A-1"}}},
+                    "status": {"S": "waiting"},
+                    "created_at": {"S": "2020-01-16T11:56:57"},
+                    "updated_at": {"N": 0},
+                    "machine_tag": {"S": "null"},
+                    "note": {"S": "null"}
+                }
+            }
+        }
+    ]
+}

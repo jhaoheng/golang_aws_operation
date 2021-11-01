@@ -1,0 +1,44 @@
+{
+    "atlas_customs_fb_target2": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "pageID": {"S": "190660404901032"},
+                    "pageSearchTag": {"S": "Titlist-Wine"},
+                    "pageAlias": {"S": "Titlist-Wine"},
+                    "status": {"S": "waiting"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "pageID": {"S": "397251280810908"},
+                    "pageSearchTag": {"S":"WineEasy888"},
+                    "pageAlias": {"S": "People need People"},
+                    "status": {"S": "waiting"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "pageID": {"S": "227003094717776"},
+                    "pageSearchTag": {"S":"Wine Amazing"},
+                    "pageAlias": {"S": "Wine Amazing"},
+                    "status": {"S": "waiting"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "pageID": {"S": "551891541492183"},
+                    "pageSearchTag": {"S":"WINE WINE"},
+                    "pageAlias": {"S": "WINE WINE"},
+                    "status": {"S": "waiting"}
+                }
+            }
+        }
+    ]
+}

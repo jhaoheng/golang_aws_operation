@@ -27,7 +27,7 @@ services:
     ports:
       - 8000:8000
     volumes: 
-      - ./local-dynamodb/shared-local-instance.db:/home/dynamodblocal/shared-local-instance.db
+      - ./local_dynamodb/shared-local-instance.db:/home/dynamodblocal/shared-local-instance.db
     
     # 參數操作請參考 readme
     command: "-jar DynamoDBLocal.jar -sharedDb"

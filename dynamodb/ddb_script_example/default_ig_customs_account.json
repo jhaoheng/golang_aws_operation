@@ -1,0 +1,22 @@
+{
+    "atlas_customs_account": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "account": {"S": "Scowlquark1387@gmail.com"},
+                    "passwd": {"S": "t35o24K8Wk0H"},
+                    "status": {"S": "disable"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "account": {"S": "Shriekring1883@gmail.com"},
+                    "passwd": {"S":"P839Ow40U7ho"},
+                    "status": {"S": "disable"}
+                }
+            }
+        }
+    ]
+}

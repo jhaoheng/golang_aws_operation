@@ -7,6 +7,13 @@ https://docs.aws.amazon.com/zh_tw/amazondynamodb/latest/developerguide/DynamoDBL
 3. `docker exec -it dynamodbClient go run main.go`
 4. Observe the dynamodbAdmin:test
 
+# 關於 localhost_dynamodb 載入自定義資料庫
+- 參考 docker-compose.yml
+- 像 mysql 一樣, 可以預載
+- 但會依據操作, 資料內容會變動
+  - 建立用 script 塞入預設資料
+  - 或者不更動預設資料庫, 用 cp 方式, 複製一份新的操作
+
 # Others
 ## dynamodbAdmin : 
 - `http://localhost:8001`
@@ -51,6 +58,7 @@ awscli --endpoint-url http://dynamodb:8000 dynamodb batch-write-item --request-i
     - attribute_exists
     - begins_with
     - contains
+    - 或者其他運算子: <=, >=, >, < ....
 
 # 使用 `dynamodbattribute`, 將內容轉換成定義好的 struct format
 
