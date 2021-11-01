@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'api
+
+  '
+Globals:
+  Function:
+    Timeout: 5
+    Environment:
+      Variables:
+        IsDev:
+          Ref: IsDev
+Parameters:
+  IsDev:
+    Type: String
+    Default: true
+    AllowedValues:
+    - false
+    - true
+Resources:
+  app:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app
+      Handler: appHandler
+      Runtime: go1.x
+      Tracing: Active

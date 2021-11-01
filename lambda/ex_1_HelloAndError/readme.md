@@ -14,4 +14,4 @@
         - `aws --endpoint-url http://localhost:9001 --region us-east-1 lambda invoke --function-name main --no-sign-request --payload '{}' /dev/stdout`
 
 # ps: 使用 docker run 測試 lambda func
-- `docker run --rm -v $(pwd)/lambda/task:/var/task lambci/lambda:go1.x main`
+- `docker run --rm -v $(pwd)/lambda/func:/var/task lambci/lambda:go1.x main`

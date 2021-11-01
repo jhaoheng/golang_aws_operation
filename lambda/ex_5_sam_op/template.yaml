@@ -8,11 +8,16 @@ Globals:
   Function:
     Timeout: 5
 
+Parameters:
+  databaseName:
+    Type: String
+    Default: max
+
 Resources:
   apiget:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: release/
+      CodeUri: app/get
       Handler: getHandler
       Runtime: go1.x
       Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
@@ -29,7 +34,7 @@ Resources:
   apipost:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: release/
+      CodeUri: app/post
       Handler: postHandler
       Runtime: go1.x
       Tracing: Active
@@ -39,14 +44,11 @@ Resources:
           Properties:
             Path: /hello/post
             Method: POST
-      Environment:
-        Variables:
-          PARAM1: VALUE
 
   apidel:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: release/
+      CodeUri: app/del
       Handler: delHandler
       Runtime: go1.x
       Tracing: Active
@@ -56,14 +58,11 @@ Resources:
           Properties:
             Path: /hello/del
             Method: DELETE
-      Environment:
-        Variables:
-          PARAM1: VALUE
 
   cusEvent:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: release/
+      CodeUri: app/cusEvent
       Handler: cuseventHandler
       Runtime: go1.x
       Tracing: Active
@@ -71,7 +70,7 @@ Resources:
   s3Event:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: release/
+      CodeUri: app/s3Event
       Handler: s3eventHandler
       Runtime: go1.x
       Tracing: Active

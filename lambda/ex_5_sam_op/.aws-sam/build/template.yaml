@@ -1,0 +1,84 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'api
+
+  '
+Globals:
+  Function:
+    Timeout: 5
+Parameters:
+  databaseName:
+    Type: String
+    Default: max
+Resources:
+  apiget:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: apiget
+      Handler: getHandler
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /hello/get
+            Method: GET
+      Environment:
+        Variables:
+          PARAM1: VALUE
+  apipost:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: apipost
+      Handler: postHandler
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /hello/post
+            Method: POST
+  apidel:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: apidel
+      Handler: delHandler
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /hello/del
+            Method: DELETE
+      Environment:
+        Variables:
+          databaseName:
+            Ref: databaseName
+  cusEvent:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: cusEvent
+      Handler: cuseventHandler
+      Runtime: go1.x
+      Tracing: Active
+  s3Event:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3Event
+      Handler: s3eventHandler
+      Runtime: go1.x
+      Tracing: Active
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: my-app
+    Description: hello app
+    Author: user1
+    SpdxLicenseId: Apache-2.0
+    Labels:
+    - tests
+    HomePageUrl: https://github.com/jhaoheng/my-app-project
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/jhaoheng/my-app-project

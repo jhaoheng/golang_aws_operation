@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -25,6 +26,7 @@ type APIGatewayProxyRequest struct {
 */
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	fmt.Printf("databaseName : %v\n\n", os.Getenv("databaseName"))
 	return events.APIGatewayProxyResponse{
 		Body:       fmt.Sprintf("Hello, del"),
 		StatusCode: 200,

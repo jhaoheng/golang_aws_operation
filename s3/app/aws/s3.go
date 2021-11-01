@@ -72,7 +72,7 @@ func NewS3ServiceWithKey(Region string, Endpoint string, keyID, keySecret string
 	SVCObject := s3.New(sess)
 	client = S3Client{
 		SVCObject: SVCObject,
-		Region:   Region,
+		Region:    Region,
 	}
 	return
 }
@@ -89,7 +89,7 @@ func NewS3ServiceWithShared(Region string, Endpoint string, sharedPath string, s
 	SVCObject := s3.New(sess)
 	client = S3Client{
 		SVCObject: SVCObject,
-		Region:   Region,
+		Region:    Region,
 	}
 	return
 }
