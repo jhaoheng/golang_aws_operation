@@ -1,4 +1,4 @@
-package ddbservice
+package DDBAgent
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
@@ -6,9 +6,9 @@ import (
 )
 
 // 屬性類型 : https://docs.aws.amazon.com/sdk-for-go/api/service/dynamodb/#AttributeValue
-func (ddb *DDBSERVICE) ScanIsExist(key, value string) bool {
+func (ddb *DDBAgent) ScanIsExist(key, value string) bool {
 	scanInput := &dynamodb.ScanInput{
-		TableName: aws.String(ddb.table),
+		TableName: aws.String(ddb.Table),
 		Select:    aws.String("COUNT"),
 		ExpressionAttributeNames: map[string]*string{
 			"#id": aws.String(key),
@@ -21,7 +21,7 @@ func (ddb *DDBSERVICE) ScanIsExist(key, value string) bool {
 		FilterExpression: aws.String("#id = :id"),
 	}
 
-	scanOutput, err := ddb.agent.Scan(scanInput)
+	scanOutput, err := ddb.Agent.Scan(scanInput)
 	if err != nil {
 		panic(err)
 	}

@@ -1,4 +1,4 @@
-package ddbservice
+package DDBAgent
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 )
 
-func (ddb *DDBSERVICE) UpdateItem() {
+func (ddb *DDBAgent) UpdateItem() {
 	var utc_8, _ = time.ParseDuration("+8h") // utc+8 時區
 	updateItemInput := &dynamodb.UpdateItemInput{
 		ExpressionAttributeNames: map[string]*string{
@@ -25,11 +25,11 @@ func (ddb *DDBSERVICE) UpdateItem() {
 			},
 		},
 		ReturnValues:     aws.String("ALL_NEW"),
-		TableName:        aws.String(ddb.table),
+		TableName:        aws.String(ddb.Table),
 		UpdateExpression: aws.String("SET #Updated_at = :Updated_value"),
 	}
 
-	updateItemOutput, err := ddb.agent.UpdateItem(updateItemInput)
+	updateItemOutput, err := ddb.Agent.UpdateItem(updateItemInput)
 	if err != nil {
 		panic(err)
 	}

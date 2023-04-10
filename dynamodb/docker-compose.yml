@@ -1,16 +1,16 @@
 version: "3.7"
 services:
-  dynamodbClient:
-    image: golang:1.13.1
-    container_name: dynamodbClient
-    volumes:
-      - ./app:/go/src/app
-      - ./.aws:/root/.aws
-    working_dir: /go/src/app
-    tty: true
+  # dynamodbClient:
+  #   image: golang:1.13.1
+  #   container_name: dynamodbClient
+  #   volumes:
+  #     - ./app:/go/src/app
+  #     - ./.aws:/root/.aws
+  #   working_dir: /go/src/app
+  #   tty: true
 
   dynamodbAdmin:
-    image: aaronshaf/dynamodb-admin
+    image: aaronshaf/dynamodb-admin:4.5.1
     container_name: dynamodbAdmin
     ports: 
       - 8001:8001
@@ -22,7 +22,7 @@ services:
 
   
   dynamodb:
-    image: amazon/dynamodb-local:1.11.477
+    image: amazon/dynamodb-local:1.21.0
     container_name: dynamodb
     ports:
       - 8000:8000
@@ -32,14 +32,14 @@ services:
     # 參數操作請參考 readme
     command: "-jar DynamoDBLocal.jar -sharedDb"
   
-  awscli:
-    image: jhaoheng/docker-awscli
-    volumes: 
-      - ./.aws:/root/.aws
-      - ./awscli:/home/awscli
-    working_dir: /home/awscli
-    container_name: awscli
-    depends_on: 
-      - dynamodb
-    command: sh -c "chmod +x /home/awscli/entrypoint.sh && sh /home/awscli/entrypoint.sh"
-    tty: true
+  # awscli:
+  #   image: jhaoheng/docker-awscli
+  #   volumes: 
+  #     - ./.aws:/root/.aws
+  #     - ./awscli:/home/awscli
+  #   working_dir: /home/awscli
+  #   container_name: awscli
+  #   depends_on: 
+  #     - dynamodb
+  #   command: sh -c "chmod +x /home/awscli/entrypoint.sh && sh /home/awscli/entrypoint.sh"
+  #   tty: true

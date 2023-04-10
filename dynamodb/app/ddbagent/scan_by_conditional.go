@@ -1,4 +1,4 @@
-package ddbservice
+package DDBAgent
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ var (
 	Lower_than   conditional = "<="
 )
 
-func (s *DDBSERVICE) ScanByCreatedTs(cond conditional, ts int64, limitSize int64, exclusiveStartKey map[string]*dynamodb.AttributeValue) (*dynamodb.ScanOutput, error) {
+func (agent *DDBAgent) ScanByCreatedTs(cond conditional, ts int64, limitSize int64, exclusiveStartKey map[string]*dynamodb.AttributeValue) (*dynamodb.ScanOutput, error) {
 	scanInput := &dynamodb.ScanInput{
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
 			":created_ts_bounder": {
@@ -24,9 +24,9 @@ func (s *DDBSERVICE) ScanByCreatedTs(cond conditional, ts int64, limitSize int64
 		},
 		FilterExpression:       aws.String(fmt.Sprintf("created_ts %v :created_ts_bounder", cond)),
 		Limit:                  aws.Int64(limitSize),
-		TableName:              aws.String(s.table),
+		TableName:              aws.String(agent.Table),
 		ReturnConsumedCapacity: aws.String("TOTAL"),
 		ExclusiveStartKey:      exclusiveStartKey,
 	}
-	return s.agent.Scan(scanInput)
+	return agent.Agent.Scan(scanInput)
 }

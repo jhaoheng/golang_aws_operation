@@ -7,12 +7,17 @@ https://docs.aws.amazon.com/zh_tw/amazondynamodb/latest/developerguide/DynamoDBL
 3. `docker exec -it dynamodbClient go run main.go`
 4. Observe the dynamodbAdmin:test
 
-# 關於 localhost_dynamodb 載入自定義資料庫
+# 關於 localhost_dynamodb 
+## 載入自定義資料庫
 - 參考 docker-compose.yml
 - 像 mysql 一樣, 可以預載
 - 但會依據操作, 資料內容會變動
   - 建立用 script 塞入預設資料
   - 或者不更動預設資料庫, 用 cp 方式, 複製一份新的操作
+## localhost 跟 remote 的 ddb 差異
+- https://docs.aws.amazon.com/zh_tw/amazondynamodb/latest/developerguide/DynamoDBLocal.UsageNotes.html
+
+
 
 # Others
 ## dynamodbAdmin : 
